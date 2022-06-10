@@ -1,0 +1,3 @@
+/Users/sandeep/Courses/C++/CppND-System-Monitor/build/CMakeFiles/monitor.dir
+/Users/sandeep/Courses/C++/CppND-System-Monitor/build/CMakeFiles/edit_cache.dir
+/Users/sandeep/Courses/C++/CppND-System-Monitor/build/CMakeFiles/rebuild_cache.dir
