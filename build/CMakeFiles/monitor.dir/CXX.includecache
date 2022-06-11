@@ -31,6 +31,8 @@ string
 -
 
 ../include/processor.h
+linux_parser.h
+../include/linux_parser.h
 
 ../include/system.h
 string
@@ -41,12 +43,6 @@ process.h
 ../include/process.h
 processor.h
 ../include/processor.h
-
-/home/workspace/Linux-System-Monitor/src/format.cpp
-string
--
-format.h
-/home/workspace/Linux-System-Monitor/src/format.h
 
 /home/workspace/Linux-System-Monitor/src/linux_parser.cpp
 dirent.h
@@ -86,20 +82,6 @@ ncurses_display.h
 system.h
 /home/workspace/Linux-System-Monitor/src/system.h
 
-/home/workspace/Linux-System-Monitor/src/process.cpp
-unistd.h
--
-cctype
--
-sstream
--
-string
--
-vector
--
-process.h
-/home/workspace/Linux-System-Monitor/src/process.h
-
 /home/workspace/Linux-System-Monitor/src/processor.cpp
 processor.h
 /home/workspace/Linux-System-Monitor/src/processor.h
@@ -121,4 +103,6 @@ processor.h
 /home/workspace/Linux-System-Monitor/src/processor.h
 system.h
 /home/workspace/Linux-System-Monitor/src/system.h
+linux_parser.h
+/home/workspace/Linux-System-Monitor/src/linux_parser.h
 

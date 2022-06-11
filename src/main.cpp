@@ -4,4 +4,8 @@
 int main() {
   System system;
   NCursesDisplay::Display(system);
+
+  //Processor cpu;
+ // cpu.Utilization();
+  return 0;
 }
