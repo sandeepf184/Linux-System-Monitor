@@ -2,13 +2,13 @@
 
 // TODO: Return the aggregate CPU utilization
 float Processor::Utilization() { 
-    totald = LinuxParser::Jiffies() - prevTotal;
-    ideld = LinuxParser::IdleJiffies() - prevIdle;
+    totald_ = LinuxParser::Jiffies() - prev_total_;
+    ideld_ = LinuxParser::IdleJiffies() - prev_idle_;
 
-    prevTotal = LinuxParser::Jiffies();
-    prevIdle = LinuxParser::IdleJiffies();
+    prev_total_ = LinuxParser::Jiffies();
+    prev_idle_ = LinuxParser::IdleJiffies();
 
-    cpuPercentage = (totald - ideld) / totald;
+    cpu_percentage_ = (totald_ - ideld_) / totald_;
 
-    return cpuPercentage; 
+    return cpu_percentage_; 
 }

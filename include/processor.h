@@ -9,7 +9,7 @@ class Processor {
 
   // TODO: Declare any necessary private members
  private:
-  float totald, ideld, prevTotal, prevIdle, cpuPercentage;
+  float totald_, ideld_, prev_total_, prev_idle_, cpu_percentage_;
 };
 
 #endif

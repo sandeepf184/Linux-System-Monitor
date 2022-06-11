@@ -116,7 +116,30 @@ long LinuxParser::Jiffies() {
 
 // TODO: Read and return the number of active jiffies for a PID
 // REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
+long LinuxParser::ActiveJiffies(int pid) { 
+  long total_time, utime, stime, cutime, cstime;
+  string line, value;
+  vector<string> pid_data;
+
+  std::ifstream stream(LinuxParser::kProcDirectory + std::to_string(pid) +LinuxParser::kStatFilename);
+  if(stream.is_open()){
+    std::getline(stream, line);
+    std::istringstream linestream(line);
+    while(linestream >> value){
+      pid_data.push_back(value);
+    }
+  }
+
+  //https://stackoverflow.com/questions/39066998/what-are-the-meaning-of-values-at-proc-pid-stat
+  utime = std::stol(pid_data[13]);
+  stime = std::stol(pid_data[14]);
+  cutime = std::stol(pid_data[15]);
+  cstime = std::stol(pid_data[16]);
+
+  total_time = utime + stime + cutime + cstime;
+
+  return total_time / sysconf(_SC_CLK_TCK); 
+}
 
 // TODO: Read and return the number of active jiffies for the system
 long LinuxParser::ActiveJiffies() { 
@@ -201,20 +224,81 @@ int LinuxParser::RunningProcesses() {
 
 // TODO: Read and return the command associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Command(int pid[[maybe_unused]]) { return string(); }
+string LinuxParser::Command(int pid) {
+  string line; 
+  
+  std::ifstream stream(LinuxParser::kProcDirectory + std::to_string(pid) + LinuxParser::kCmdlineFilename);
+  if(stream.is_open()){
+    std::getline(stream, line); 
+  }  
+  return line; 
+}
 
 // TODO: Read and return the memory used by a process
 // REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Ram(int pid[[maybe_unused]]) { return string(); }
+string LinuxParser::Ram(int pid) { 
+  string line, key, value;
+  int ram;
+  std::ifstream stream(LinuxParser::kProcDirectory + std::to_string(pid) + LinuxParser::kStatusFilename);
+  if (stream.is_open()) {
+    while (std::getline(stream, line)) {
+      std::istringstream linestream(line);
+      while (linestream >> key >> value) {
+        if (key == "VmSize:") {
+          ram = int(std::stof(value) / float(1024));
+          return std::to_string(ram);
+        }
+      }
+    }
+  }
+  return string(); 
+}
 
 // TODO: Read and return the user ID associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Uid(int pid[[maybe_unused]]) { return string(); }
+string LinuxParser::Uid(int pid) { 
+  string line, key, value;
+  std::ifstream stream(LinuxParser::kProcDirectory + std::to_string(pid) + LinuxParser::kStatusFilename);
+  if (stream.is_open()) {
+    while (std::getline(stream, line)) {
+      std::istringstream linestream(line);
+      linestream >> key;
+      if (key == "Uid:") {
+        linestream >> value;
+        return value;
+      }
+    }
+  }
+  return string(); 
+}
 
 // TODO: Read and return the user associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::User(int pid[[maybe_unused]]) { return string(); }
+string LinuxParser::User(int pid) { 
+  string line, key, value;
+  std::ifstream stream(LinuxParser::kPasswordPath);
+  if (stream.is_open()) {
+    std::getline(stream, line);
+    std::istringstream linestream(line);
+    if (line.find("x:" + LinuxParser::Uid(pid)) != line.npos) {
+      return line.substr(0, line.find(":"));
+    }
+  }
+  return string(); 
+}
 
 // TODO: Read and return the uptime of a process
 // REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::UpTime(int pid[[maybe_unused]]) { return 0; }
+long LinuxParser::UpTime(int pid) {
+  string line, value;
+  vector<string> pid_data;
+  std::ifstream stream(LinuxParser::kProcDirectory + std::to_string(pid) + LinuxParser::kStatFilename);
+  if (stream.is_open()) {
+    std::getline(stream, line);
+    std::istringstream linestream(line);
+    while (linestream >> value) {
+      pid_data.push_back(value);
+    }
+  }
+  return (std::stol(pid_data[21]) / sysconf(_SC_CLK_TCK)); 
+}
