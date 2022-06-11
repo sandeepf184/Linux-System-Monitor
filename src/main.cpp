@@ -1,5 +1,6 @@
 #include "ncurses_display.h"
 #include "system.h"
+#include <iostream>
 
 int main() {
   System system;
@@ -7,5 +8,6 @@ int main() {
 
   //Processor cpu;
  // cpu.Utilization();
+  //std::cout << system.UpTime() << "\n";
   return 0;
 }
